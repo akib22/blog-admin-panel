@@ -72,11 +72,19 @@ select {
 }
 
 .mb-10 {
-  margin-bottom: 10px;
+  margin-bottom: 10px !important;
+}
+
+.mb-20 {
+  margin-bottom: 20px !important;
 }
 
 .mb-40 {
   margin-bottom: 40px;
+}
+
+.w-100 {
+  width: 100%;
 }
 
 .flex {

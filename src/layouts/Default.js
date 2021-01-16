@@ -11,7 +11,7 @@ export default function Default() {
       <Route exact path="/" component={Home} />
       <Route path="/users/:userId" component={User} />
       <Route path="/posts/:postId" component={Post} />
-      <Route path="create-post" component={CreatePost} />
+      <Route path="/create-post" component={CreatePost} />
       <Route component={NotFound} />
     </Switch>
   );
