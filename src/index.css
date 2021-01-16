@@ -61,3 +61,25 @@ textarea,
 select {
   font: inherit;
 }
+
+/* common styles */
+.mr-8 {
+  margin-right: 8px;
+}
+
+.flex {
+  display: flex;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.link {
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.link:hover {
+  text-decoration: underline;
+}
