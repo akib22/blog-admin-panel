@@ -20,7 +20,7 @@ export default function BlogPost({ name, id }) {
   return (
     <Paper className={`mb-10 ${classes.paper}`}>
       <UserAvatar data={{ name }} />
-      <Link to={`/posts/:${id}`} className={`link ${classes.postTitle}`}>
+      <Link to={`/posts/${id}`} className={`link ${classes.postTitle}`}>
         How to test your React app.
       </Link>
       <Typography className={classes.padding}>3 comments</Typography>

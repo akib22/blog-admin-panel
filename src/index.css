@@ -91,6 +91,10 @@ select {
   justify-content: center;
 }
 
+.text-right {
+  text-align: right;
+}
+
 .link {
   text-decoration: none;
   color: rgba(0, 0, 0, 0.87);
