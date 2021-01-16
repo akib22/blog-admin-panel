@@ -67,12 +67,28 @@ select {
   margin-right: 8px;
 }
 
+.mt-8 {
+  margin-top: 8px;
+}
+
+.mb-10 {
+  margin-bottom: 10px;
+}
+
+.mb-40 {
+  margin-bottom: 40px;
+}
+
 .flex {
   display: flex;
 }
 
 .items-center {
   align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
 }
 
 .link {
