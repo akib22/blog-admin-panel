@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+axios.defaults.headers.post.Authorization = `Bearer ${process.env.REACT_APP_TOKEN}`;
+
 const API = axios.create({
   baseURL: 'https://gorest.co.in/public-api/',
   responseType: 'json',
@@ -30,7 +32,7 @@ async function getPosts(userId) {
     const { data } = await API.get(`/users/${userId}/posts`);
     return data;
   } catch (err) {
-    console.error('user fetching error', err);
+    console.error('posts fetching error', err);
     throw err;
   }
 }
@@ -40,7 +42,7 @@ async function getPost(userId, postId) {
     const { data } = await API.get(`/users/${userId}/posts`);
     return data.data.filter((item) => item.id === parseInt(postId, 10))[0];
   } catch (err) {
-    console.error('user fetching error', err);
+    console.error('post fetching error', err);
     throw err;
   }
 }
@@ -48,11 +50,27 @@ async function getPost(userId, postId) {
 async function getComments(postId) {
   try {
     const { data } = await API.get(`/posts/${postId}/comments`);
+    console.log('comments', data, postId);
     return data;
   } catch (err) {
-    console.error('user fetching error', err);
+    console.error('comments fetching error', err);
     throw err;
   }
 }
 
-export { getUsers, getUser, getPosts, getPost, getComments };
+async function addComment({ postId, comment }) {
+  try {
+    const { data } = await API.post(`/posts/${postId}/comments`, {
+      name: 'ar',
+      email: 'ar@gmail.com',
+      body: comment,
+    });
+    console.log(data);
+    return data;
+  } catch (err) {
+    console.error('add comment error', err);
+    throw err;
+  }
+}
+
+export { getUsers, getUser, getPosts, getPost, getComments, addComment };

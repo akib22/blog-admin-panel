@@ -1,11 +1,12 @@
+import { useState } from 'react';
 import { Container, Typography, Avatar, TextField, Button, Grid, Paper } from '@material-ui/core';
 import { useParams } from 'react-router-dom';
-import { useQueries } from 'react-query';
+import { useQueries, useMutation, useQueryClient } from 'react-query';
 import { makeStyles } from '@material-ui/core/styles';
 import Comment from '../components/Comment';
 import Loader from '../components/common/Loader';
 import SomethingWentWrong from '../components/common/SomethingWentWrong';
-import { getPost, getComments, getUser } from '../api';
+import { getPost, getComments, getUser, addComment } from '../api';
 
 const useStyles = makeStyles((theme) => ({
   postTitle: {
@@ -52,11 +53,14 @@ const useStyles = makeStyles((theme) => ({
 export default function Post() {
   const classes = useStyles();
   const { postId, userId } = useParams();
+  const [comment, setComment] = useState('');
+  const queryClient = useQueryClient();
   const [post, comments, user] = useQueries([
     { queryKey: ['post', postId], queryFn: () => getPost(userId, postId) },
-    { queryKey: ['comments', postId], queryFn: () => getComments(userId) },
+    { queryKey: ['comments', postId], queryFn: () => getComments(postId) },
     { queryKey: ['user', userId], queryFn: () => getUser(userId) },
   ]);
+  const mutation = useMutation((payload) => addComment(payload));
 
   if (post.isLoading || comments.isLoading || user.isLoading) {
     return <Loader />;
@@ -66,12 +70,27 @@ export default function Post() {
     return <SomethingWentWrong />;
   }
 
+  function handelSubmit(e) {
+    e.preventDefault();
+    mutation.mutate(
+      { postId, comment },
+      {
+        onSuccess: () => {
+          setComment('');
+          queryClient.invalidateQueries('comments');
+        },
+      },
+    );
+  }
+
   return (
     <Container>
       <Grid container spacing={3}>
         <Grid item xs={10} sm={8}>
           <div>
-            <Typography className={classes.postTitle}>{post.data.title}</Typography>
+            <Typography className={classes.postTitle}>
+              {post.data.title} {process.env.REACT_APP_TOKEN}
+            </Typography>
             <div className="flex items-center">
               <Avatar className="mr-8" />
               <Typography>{user.data.data.name}</Typography>
@@ -79,7 +98,7 @@ export default function Post() {
           </div>
           <Typography className={classes.postContent}>{post.data.body}</Typography>
           <div className="mt-8">
-            <form>
+            <form onSubmit={handelSubmit}>
               <TextField
                 style={{ width: '100%' }}
                 id="outlined-multiline-static"
@@ -87,6 +106,9 @@ export default function Post() {
                 rows={4}
                 placeholder="Type a comment"
                 variant="outlined"
+                required
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
               />
               <div className="text-right mt-8 mb-10">
                 <Button type="submit" variant="contained" color="primary">
