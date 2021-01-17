@@ -50,7 +50,6 @@ async function getPost(userId, postId) {
 async function getComments(postId) {
   try {
     const { data } = await API.get(`/posts/${postId}/comments`);
-    console.log('comments', data, postId);
     return data;
   } catch (err) {
     console.error('comments fetching error', err);
@@ -65,7 +64,6 @@ async function addComment({ postId, comment }) {
       email: 'ar@gmail.com',
       body: comment,
     });
-    console.log(data);
     return data;
   } catch (err) {
     console.error('add comment error', err);

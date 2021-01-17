@@ -88,9 +88,7 @@ export default function Post() {
       <Grid container spacing={3}>
         <Grid item xs={10} sm={8}>
           <div>
-            <Typography className={classes.postTitle}>
-              {post.data.title} {process.env.REACT_APP_TOKEN}
-            </Typography>
+            <Typography className={classes.postTitle}>{post.data.title}</Typography>
             <div className="flex items-center">
               <Avatar className="mr-8" />
               <Typography>{user.data.data.name}</Typography>
