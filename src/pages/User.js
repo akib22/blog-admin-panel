@@ -76,6 +76,14 @@ export default function User() {
     return <SomethingWentWrong />;
   }
 
+  if (user.data.code === 404) {
+    return (
+      <div className="w-100 h-100 flex justify-center items-center">
+        <Typography variant="h5">{user.data.data.message}</Typography>
+      </div>
+    );
+  }
+
   return (
     <div>
       <div className="mb-40">

@@ -83,6 +83,24 @@ export default function Post() {
     );
   }
 
+  console.log(post);
+
+  if (user.data.code === 404) {
+    return (
+      <div className="w-100 h-100 flex justify-center items-center">
+        <Typography variant="h5">{user.data.data.message}</Typography>
+      </div>
+    );
+  }
+
+  if (!post.data) {
+    return (
+      <div className="w-100 h-100 flex justify-center items-center">
+        <Typography variant="h5">Resource not found.</Typography>
+      </div>
+    );
+  }
+
   return (
     <Container>
       <Grid container spacing={3}>

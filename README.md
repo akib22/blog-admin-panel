@@ -2,6 +2,7 @@
 
 ```
 git clone git@github.com:joynal/pet-house.git
+
 cd pet-house
 ```
 
