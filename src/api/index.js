@@ -71,4 +71,14 @@ async function addComment({ postId, comment }) {
   }
 }
 
-export { getUsers, getUser, getPosts, getPost, getComments, addComment };
+async function addPost({ title, body, user }) {
+  try {
+    const { data } = await API.post(`/users/${user}/posts`, { title, body });
+    return data;
+  } catch (err) {
+    console.error('add comment error', err);
+    throw err;
+  }
+}
+
+export { getUsers, getUser, getPosts, getPost, getComments, addComment, addPost };

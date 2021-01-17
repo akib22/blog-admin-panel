@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -69,6 +70,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'none',
     [theme.breakpoints.up('md')]: {
       display: 'flex',
+      alignItems: 'center',
     },
   },
   sectionMobile: {
@@ -76,6 +78,12 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('md')]: {
       display: 'none',
     },
+  },
+  createPost: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    textDecoration: 'none',
+    color: '#fff',
   },
 }));
 
@@ -181,6 +189,9 @@ export default function Navbar() {
             </div>
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
+              <Link className={classes.createPost} to="/create-post">
+                Create post
+              </Link>
               <IconButton aria-label="show 17 new notifications" color="inherit">
                 <Badge badgeContent={17} color="secondary">
                   <NotificationsIcon />

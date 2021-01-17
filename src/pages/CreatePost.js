@@ -8,7 +8,12 @@ import {
   InputLabel,
   MenuItem,
 } from '@material-ui/core';
+import { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import { useQuery, useMutation } from 'react-query';
+import Loader from '../components/common/Loader';
+import SomethingWentWrong from '../components/common/SomethingWentWrong';
+import { getUsers, addPost } from '../api';
 
 const useStyles = makeStyles({
   cpTitle: {
@@ -21,11 +26,38 @@ const useStyles = makeStyles({
 
 export default function CreatePost() {
   const classes = useStyles();
+  const [body, setBody] = useState('');
+  const [title, setTitle] = useState('');
+  const [userId, setUserId] = useState('');
+  const { isLoading, data: users, isError } = useQuery('users', getUsers);
+  const mutation = useMutation((payload) => addPost(payload));
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (isError) {
+    return <SomethingWentWrong />;
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    mutation.mutate(
+      { title, body, user: userId },
+      {
+        onSuccess: () => {
+          setTitle('');
+          setUserId('');
+          setBody('');
+        },
+      },
+    );
+  }
 
   return (
     <Container>
       <Typography className={classes.cpTitle}>Create Post</Typography>
-      <form>
+      <form onSubmit={handleSubmit}>
         <TextField
           className="mb-20 w-100"
           id="post-title"
@@ -33,6 +65,8 @@ export default function CreatePost() {
           variant="outlined"
           label="Post title"
           required
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
         />
         <TextField
           className="mb-20 w-100"
@@ -43,22 +77,24 @@ export default function CreatePost() {
           variant="outlined"
           label="Post body"
           required
+          value={body}
+          onChange={(e) => setBody(e.target.value)}
         />
         <FormControl variant="outlined" className={`w-100 mb-20 ${classes.formControl}`}>
           <InputLabel id="user">Select a user</InputLabel>
           <Select
             labelId="user"
             id="user"
-            value={10}
-            onChange={() => console.log('change a')}
             label="Select a user"
+            required
+            value={userId}
+            onChange={(e) => setUserId(e.target.value)}
           >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
+            {users.data.map((user) => (
+              <MenuItem key={user.email} value={user.id}>
+                {user.name}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
         <Button className="w-100" type="submit" variant="contained" color="primary">
