@@ -1,9 +1,14 @@
 import { Container, CardContent, Card, Avatar, Grid, Typography, Paper } from '@material-ui/core';
+import { useParams } from 'react-router-dom';
+import { useQueries } from 'react-query';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import GithubIcon from '@material-ui/icons/GitHub';
 import { makeStyles } from '@material-ui/core/styles';
 import BlogPost from '../components/BlogPost';
+import Loader from '../components/common/Loader';
+import SomethingWentWrong from '../components/common/SomethingWentWrong';
+import { getUser, getPosts } from '../api';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -55,8 +60,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CreatePost() {
+export default function User() {
   const classes = useStyles();
+  const { userId } = useParams();
+  const [user, posts] = useQueries([
+    { queryKey: ['user', userId], queryFn: () => getUser(userId) },
+    { queryKey: ['posts', userId], queryFn: () => getPosts(userId) },
+  ]);
+
+  if (user.isLoading || posts.isLoading) {
+    return <Loader />;
+  }
+
+  if (user.isError || posts.isLoading) {
+    return <SomethingWentWrong />;
+  }
 
   return (
     <div>
@@ -66,8 +84,8 @@ export default function CreatePost() {
           <Avatar className={classes.large} />
           <Card className={classes.infoCard}>
             <CardContent>
-              <Typography className={classes.username}>Jhon Willams</Typography>
-              <Typography>a@email.com</Typography>
+              <Typography className={classes.username}>{user.data.data.name}</Typography>
+              <Typography>{user.data.data.email}</Typography>
               <div className="mt-8 flex justify-center align-center">
                 <GithubIcon />
                 <TwitterIcon style={{ margin: '0 10px' }} />
@@ -89,16 +107,29 @@ export default function CreatePost() {
               </Typography>
             </Paper>
             <Paper className={classes.card}>
-              <Typography className={classes.text}>3 posts</Typography>
+              <Typography className={classes.text}>{posts.data?.data.length || 0} posts</Typography>
               <Typography className={classes.text}>5 comments</Typography>
             </Paper>
           </Grid>
 
           {/* Post List */}
-          <Grid item xs={10} sm={8}>
-            <BlogPost className={classes.paper} name="Jhon Willams" id={1} />
-            <BlogPost className={classes.paper} name="Jhon Willams" id={1} />
-          </Grid>
+          {posts.data.data.length > 0 ? (
+            <Grid item xs={10} sm={8}>
+              {posts.data.data.map((post) => (
+                <BlogPost
+                  key={post.id}
+                  className={classes.paper}
+                  name={user.data.data.name}
+                  id={user.data.data.id}
+                  post={post}
+                />
+              ))}
+            </Grid>
+          ) : (
+            <Grid item xs={10} sm={8}>
+              <Typography variant="h4">No posts Found!</Typography>
+            </Grid>
+          )}
         </Grid>
       </Container>
     </div>

@@ -10,7 +10,7 @@ export default function Default() {
     <Switch>
       <Route exact path="/" component={Home} />
       <Route path="/users/:userId" component={User} />
-      <Route path="/posts/:postId" component={Post} />
+      <Route path="/:userId/posts/:postId" component={Post} />
       <Route path="/create-post" component={CreatePost} />
       <Route component={NotFound} />
     </Switch>

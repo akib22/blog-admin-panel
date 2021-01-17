@@ -14,14 +14,14 @@ const useStyles = makeStyles({
   },
 });
 
-export default function BlogPost({ name, id }) {
+export default function BlogPost({ name, id, post }) {
   const classes = useStyles();
 
   return (
     <Paper className={`mb-10 ${classes.paper}`}>
-      <UserAvatar data={{ name }} />
-      <Link to={`/posts/${id}`} className={`link ${classes.postTitle}`}>
-        How to test your React app.
+      <UserAvatar data={{ name, id }} />
+      <Link to={`/${id}/posts/${post.id}`} className={`link ${classes.postTitle}`}>
+        {post.title}
       </Link>
       <Typography className={classes.padding}>3 comments</Typography>
     </Paper>
@@ -31,4 +31,8 @@ export default function BlogPost({ name, id }) {
 BlogPost.propTypes = {
   name: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
+  post: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
+  }),
 };

@@ -5,8 +5,8 @@ export default function StatusPill({ content }) {
     padding: '5px 10px',
     fontWeight: 'bold',
     borderRadius: '999px',
-    color: content === 'active' ? 'rgba(6,95,70)' : 'rgba(153,27,27)',
-    background: content === 'active' ? 'rgb(209,250,229)' : 'rgba(254,226,226)',
+    color: content === 'Active' ? 'rgba(6,95,70)' : 'rgba(153,27,27)',
+    background: content === 'Active' ? 'rgb(209,250,229)' : 'rgba(254,226,226)',
   };
 
   return <span style={styles}>{content}</span>;

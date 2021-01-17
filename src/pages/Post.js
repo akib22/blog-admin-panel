@@ -1,12 +1,19 @@
 import { Container, Typography, Avatar, TextField, Button, Grid, Paper } from '@material-ui/core';
+import { useParams } from 'react-router-dom';
+import { useQueries } from 'react-query';
 import { makeStyles } from '@material-ui/core/styles';
 import Comment from '../components/Comment';
+import Loader from '../components/common/Loader';
+import SomethingWentWrong from '../components/common/SomethingWentWrong';
+import { getPost, getComments, getUser } from '../api';
 
 const useStyles = makeStyles((theme) => ({
   postTitle: {
-    fontSize: 48,
+    fontSize: 36,
     fontWeight: 'bold',
-    paddingTop: 25,
+    paddingTop: 30,
+    paddingBottom: 10,
+    lineHeight: 1.2,
   },
   postContent: {
     padding: '12px 0',
@@ -44,22 +51,33 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Post() {
   const classes = useStyles();
+  const { postId, userId } = useParams();
+  const [post, comments, user] = useQueries([
+    { queryKey: ['post', postId], queryFn: () => getPost(userId, postId) },
+    { queryKey: ['comments', postId], queryFn: () => getComments(userId) },
+    { queryKey: ['user', userId], queryFn: () => getUser(userId) },
+  ]);
+
+  if (post.isLoading || comments.isLoading || user.isLoading) {
+    return <Loader />;
+  }
+
+  if (post.isError || comments.isLoading || user.isLoading) {
+    return <SomethingWentWrong />;
+  }
 
   return (
     <Container>
       <Grid container spacing={3}>
         <Grid item xs={10} sm={8}>
           <div>
-            <Typography className={classes.postTitle}>How to test your react app</Typography>
+            <Typography className={classes.postTitle}>{post.data.title}</Typography>
             <div className="flex items-center">
               <Avatar className="mr-8" />
-              <Typography>name</Typography>
+              <Typography>{user.data.data.name}</Typography>
             </div>
           </div>
-          <Typography className={classes.postContent}>
-            loasdfkj asdfjalskdfjasdf sdlkfjsldkfjsdlfkjsdlfk fasdlkjasdf
-            sdfsdkfjsdlfkjsdlfkjflksjdfl asdfkjsdfj asdfjlskdf asfldkjs fdlksd
-          </Typography>
+          <Typography className={classes.postContent}>{post.data.body}</Typography>
           <div className="mt-8">
             <form>
               <TextField
@@ -76,8 +94,10 @@ export default function Post() {
                 </Button>
               </div>
             </form>
-            <Comment comment="testing purpose" />
-            <Comment comment="testing purpose" />
+            {comments.data &&
+              comments.data.data.map((comment) => (
+                <Comment key={comment.id} comment={comment.body} />
+              ))}
           </div>
         </Grid>
         <Grid item xs={4} sm={4} className={classes.exploreContainer}>

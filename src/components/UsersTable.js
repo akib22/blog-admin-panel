@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -28,19 +29,6 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-function createData(name, email, gender, status) {
-  return { name, email, gender, status };
-}
-
-const rows = [
-  createData('Frozen yoghurt', 'a@gmail.com', 'male', 24),
-  createData('Ice cream sandwich', 'b@gmail.com', 'male', 37),
-  createData('Ice cream 1', 'b@gmail.com', 'male', 37),
-  createData('Ice cream 2', 'b@gmail.com', 'male', 37),
-  createData('Ice cream 3', 'b@gmail.com', 'male', 37),
-  createData('Ice cream 4', 'b@gmail.com', 'male', 37),
-];
-
 const useStyles = makeStyles({
   table: {
     minWidth: 700,
@@ -50,7 +38,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function CustomizedTables() {
+export default function UsersTable({ users }) {
   const classes = useStyles();
 
   return (
@@ -65,15 +53,15 @@ export default function CustomizedTables() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.name}>
+          {users.map((user) => (
+            <StyledTableRow key={user.name}>
               <StyledTableCell component="th" scope="row">
-                <UserAvatar src="" alt="user-avatar" data={row} />
+                <UserAvatar src="" alt="user-avatar" data={user} />
               </StyledTableCell>
-              <StyledTableCell align="right">{row.email}</StyledTableCell>
-              <StyledTableCell align="right">{row.gender}</StyledTableCell>
+              <StyledTableCell align="right">{user.email}</StyledTableCell>
+              <StyledTableCell align="right">{user.gender}</StyledTableCell>
               <StyledTableCell align="center">
-                <StatusPill content="active" />
+                <StatusPill content={user.status} />
               </StyledTableCell>
             </StyledTableRow>
           ))}
@@ -82,3 +70,7 @@ export default function CustomizedTables() {
     </TableContainer>
   );
 }
+
+UsersTable.propTypes = {
+  users: PropTypes.array.isRequired,
+};
