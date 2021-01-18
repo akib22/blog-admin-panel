@@ -1,7 +1,7 @@
 ## Step 1: Clone the repo
 
 ```
-git clone git@github.com:joynal/pet-house.git
+git clone git@github.com:akib22/blog-admin-panel.git
 
 cd pet-house
 ```
