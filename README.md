@@ -3,7 +3,7 @@
 ```
 git clone git@github.com:akib22/blog-admin-panel.git
 
-cd pet-house
+cd blog-admin-panel
 ```
 
 ## Step 2: Create .env.local file
