@@ -7,9 +7,9 @@ const API = axios.create({
   responseType: 'json',
 });
 
-async function getUsers() {
+async function getUsers(page = 1) {
   try {
-    const { data } = await API.get('/users');
+    const { data } = await API.get(`/users/?page=${page}`);
     return data;
   } catch (err) {
     console.error('users fetching error', err);

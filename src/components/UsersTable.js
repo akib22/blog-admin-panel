@@ -54,7 +54,7 @@ export default function UsersTable({ users }) {
         </TableHead>
         <TableBody>
           {users.map((user) => (
-            <StyledTableRow key={user.name}>
+            <StyledTableRow key={user.id}>
               <StyledTableCell component="th" scope="row">
                 <UserAvatar src="" alt="user-avatar" data={user} />
               </StyledTableCell>

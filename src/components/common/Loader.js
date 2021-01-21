@@ -18,7 +18,7 @@ export default function Loader() {
   const classes = useStyles();
 
   return (
-    <div className="w-100 h-100 flex justify-center items-center">
+    <div className="w-100 h-80 flex justify-center items-center">
       <CircularProgress
         variant="indeterminate"
         disableShrink

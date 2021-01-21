@@ -81,7 +81,7 @@ export default function User() {
 
   if (user.data.code === 404) {
     return (
-      <div className="w-100 h-100 flex justify-center items-center">
+      <div className="w-100 h-80 flex justify-center items-center">
         <Typography variant="h5">{user.data.data.message}</Typography>
       </div>
     );
