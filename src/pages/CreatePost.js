@@ -11,6 +11,7 @@ import {
 import { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useQuery, useMutation } from 'react-query';
+import Toast from '../components/common/Toast';
 import Loader from '../components/common/Loader';
 import SomethingWentWrong from '../components/common/SomethingWentWrong';
 import { getUsers, addPost } from '../api';
@@ -29,6 +30,11 @@ export default function CreatePost() {
   const [body, setBody] = useState('');
   const [title, setTitle] = useState('');
   const [userId, setUserId] = useState('');
+  const [postAddingStatus, setPostAddingStatus] = useState({
+    status: false,
+    msg: '',
+    type: '',
+  });
   const { isLoading, data: users, isError } = useQuery('users', getUsers);
   const mutation = useMutation((payload) => addPost(payload));
 
@@ -45,10 +51,25 @@ export default function CreatePost() {
     mutation.mutate(
       { title, body, user: userId },
       {
-        onSuccess: () => {
-          setTitle('');
-          setUserId('');
-          setBody('');
+        onSuccess: (data) => {
+          if (data.code === 201) {
+            setTitle('');
+            setUserId('');
+            setBody('');
+            setPostAddingStatus((state) => ({
+              ...state,
+              status: true,
+              msg: 'Post added successfully!',
+              type: 'success',
+            }));
+          } else {
+            setPostAddingStatus((state) => ({
+              ...state,
+              status: true,
+            }));
+          }
+
+          window.scroll({ top: 0, behavior: 'smooth' });
         },
       },
     );
@@ -56,6 +77,14 @@ export default function CreatePost() {
 
   return (
     <Container>
+      {postAddingStatus.status && (
+        <Toast
+          message={postAddingStatus.msg}
+          type={postAddingStatus.type}
+          status={postAddingStatus.status}
+          setStatus={() => setPostAddingStatus((state) => ({ ...state, status: false }))}
+        />
+      )}
       <Typography className={classes.cpTitle}>Create Post</Typography>
       <form onSubmit={handleSubmit}>
         <TextField

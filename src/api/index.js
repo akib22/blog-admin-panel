@@ -64,6 +64,7 @@ async function addComment({ postId, comment }) {
       email: 'ar@gmail.com',
       body: comment,
     });
+
     return data;
   } catch (err) {
     console.error('add comment error', err);

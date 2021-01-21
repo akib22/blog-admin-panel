@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { useQueries, useMutation, useQueryClient } from 'react-query';
 import { makeStyles } from '@material-ui/core/styles';
 import Comment from '../components/Comment';
+import Toast from '../components/common/Toast';
 import Loader from '../components/common/Loader';
 import SomethingWentWrong from '../components/common/SomethingWentWrong';
 import { getPost, getComments, getUser, addComment } from '../api';
@@ -54,6 +55,11 @@ export default function Post() {
   const classes = useStyles();
   const { postId, userId } = useParams();
   const [comment, setComment] = useState('');
+  const [commentAddingStatus, setCommentAddingStatus] = useState({
+    status: false,
+    msg: '',
+    type: '',
+  });
   const queryClient = useQueryClient();
   const [post, comments, user] = useQueries([
     { queryKey: ['post', postId], queryFn: () => getPost(userId, postId) },
@@ -75,9 +81,31 @@ export default function Post() {
     mutation.mutate(
       { postId, comment },
       {
-        onSuccess: () => {
-          setComment('');
-          queryClient.invalidateQueries('comments');
+        onSuccess: (data) => {
+          if (data.code === 201) {
+            setComment('');
+            queryClient.invalidateQueries('comments');
+            setCommentAddingStatus((state) => ({
+              ...state,
+              status: true,
+              msg: 'Comment added successfully!',
+              type: 'success',
+            }));
+          } else {
+            setCommentAddingStatus((state) => ({
+              ...state,
+              status: true,
+            }));
+          }
+          window.scroll({ top: 0, behavior: 'smooth' });
+        },
+      },
+      {
+        onError: () => {
+          setCommentAddingStatus((state) => ({
+            ...state,
+            status: true,
+          }));
         },
       },
     );
@@ -101,6 +129,14 @@ export default function Post() {
 
   return (
     <Container>
+      {commentAddingStatus.status && (
+        <Toast
+          message={commentAddingStatus.msg}
+          type={commentAddingStatus.type}
+          status={commentAddingStatus.status}
+          setStatus={() => setCommentAddingStatus((state) => ({ ...state, status: false }))}
+        />
+      )}
       <Grid container spacing={3}>
         <Grid item xs={10} sm={8}>
           <div>
