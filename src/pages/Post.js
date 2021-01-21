@@ -83,8 +83,6 @@ export default function Post() {
     );
   }
 
-  console.log(post);
-
   if (user.data.code === 404) {
     return (
       <div className="w-100 h-100 flex justify-center items-center">

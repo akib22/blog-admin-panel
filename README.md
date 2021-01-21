@@ -12,12 +12,12 @@ cd blog-admin-panel
 touch .env.local
 ```
 
-From `.env.example` file copy all content and update with your own token.
+From `.env.example` file copy all content and update with your own access token. You can get your access token from [here](https://gorest.co.in/access-token).
 
 ## Step 3: Start the server
 
 ```
-yarn or npm i
+yarn
 
-yarn start or npm start
+REACT_APP_TOKEN={token} yarn start
 ```

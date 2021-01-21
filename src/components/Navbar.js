@@ -8,7 +8,7 @@ import InputBase from '@material-ui/core/InputBase';
 import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import MenuIcon from '@material-ui/icons/Menu';
+import HomeIcon from '@material-ui/icons/Home';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import NotificationsIcon from '@material-ui/icons/Notifications';
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 25,
   },
   menuButton: {
-    marginRight: theme.spacing(2),
+    color: '#fff',
   },
   title: {
     display: 'none',
@@ -166,13 +166,10 @@ export default function Navbar() {
       <AppBar position="static">
         <Container>
           <Toolbar disableGutters>
-            <IconButton
-              edge="start"
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="open drawer"
-            >
-              <MenuIcon />
+            <IconButton edge="start" color="inherit" aria-label="open drawer">
+              <Link className={classes.menuButton} to="/">
+                <HomeIcon />
+              </Link>
             </IconButton>
             <div className={classes.search}>
               <div className={classes.searchIcon}>

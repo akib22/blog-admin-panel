@@ -1,7 +1,6 @@
 import { Container, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useQuery } from 'react-query';
-import Navbar from '../components/Navbar';
 import Card from '../components/Card';
 import UsersTable from '../components/UsersTable';
 import Loader from '../components/common/Loader';
@@ -27,19 +26,16 @@ export default function Home() {
   }
 
   return (
-    <>
-      <Navbar />
-      <Container>
-        <Grid container direction="row" justify="space-between" alignItems="center">
-          <Card category="Users" data={users?.meta?.pagination.total} />
-          <Card category="Posts" data={12321} />
-          <Card category="Comments" data={12321} />
-          <Card category="Reads" data={12321} />
-        </Grid>
-        <div className={classes.marginTop}>
-          <UsersTable users={users?.data} />
-        </div>
-      </Container>
-    </>
+    <Container>
+      <Grid container direction="row" justify="space-between" alignItems="center">
+        <Card category="Users" data={users?.meta?.pagination.total} />
+        <Card category="Posts" data={12321} />
+        <Card category="Comments" data={12321} />
+        <Card category="Reads" data={12321} />
+      </Grid>
+      <div className={classes.marginTop}>
+        <UsersTable users={users?.data} />
+      </div>
+    </Container>
   );
 }

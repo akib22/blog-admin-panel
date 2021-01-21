@@ -32,8 +32,8 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(15),
     height: theme.spacing(15),
     position: 'absolute',
-    top: 40,
-    left: '45%',
+    top: 110,
+    left: '46%',
   },
   username: {
     fontSize: 24,
@@ -57,6 +57,9 @@ const useStyles = makeStyles((theme) => ({
   },
   card: {
     padding: 15,
+  },
+  move: {
+    marginTop: -25,
   },
 }));
 
@@ -85,7 +88,7 @@ export default function User() {
   }
 
   return (
-    <div>
+    <div className={classes.move}>
       <div className="mb-40">
         <div className={classes.banner} />
         <Container>
